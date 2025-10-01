@@ -14,7 +14,13 @@ import '../styles/global.css';
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 	</head>
-	<body class="min-h-screen flex flex-col items-center justify-center p-8 text-center text-white font-['Inter'] bg-gradient-to-br from-[rgb(47,53,67)] via-[rgb(37,42,52)] to-[rgb(30,34,42)]">
+	<body class="min-h-screen flex flex-col items-center justify-center p-8 text-center text-white font-['Inter'] relative overflow-hidden bg-[rgb(30,34,42)]">
+		<!-- Background avec effet nébuleuse -->
+		<div class="fixed inset-0 -z-10 bg-nebula"></div>
+		
+		<!-- Effet de lumière qui suit la souris -->
+		<div id="mouse-glow" class="fixed -z-10 pointer-events-none opacity-0 transition-opacity duration-300"></div>
+		
 		<!-- Toast notification -->
 		<div id="toast" class="fixed top-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-6 py-4 shadow-2xl opacity-0 translate-x-full transition-all duration-500 ease-out pointer-events-none z-50">
 			<div class="flex items-center gap-3">
@@ -139,6 +145,48 @@ import '../styles/global.css';
 		</footer>
 
 		<style>
+			/* Background nébuleuse */
+			.bg-nebula {
+				background: 
+					radial-gradient(ellipse 800px 600px at 20% 30%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+					radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
+					radial-gradient(ellipse 1000px 500px at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+					radial-gradient(ellipse 400px 600px at 10% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+					radial-gradient(ellipse 700px 400px at 90% 20%, rgba(139, 92, 246, 0.09) 0%, transparent 50%),
+					linear-gradient(180deg, rgb(30, 34, 42) 0%, rgb(37, 42, 52) 50%, rgb(30, 34, 42) 100%);
+				animation: nebula-move 20s ease-in-out infinite;
+			}
+
+			/* Effet de lumière qui suit la souris */
+			#mouse-glow {
+				width: 700px;
+				height: 700px;
+				background: radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, rgba(99, 102, 241, 0.15) 30%, transparent 65%);
+				transform: translate(-50%, -50%);
+				filter: blur(35px);
+			}
+
+			@keyframes nebula-move {
+				0%, 100% {
+					background: 
+						radial-gradient(ellipse 800px 600px at 20% 30%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+						radial-gradient(ellipse 600px 800px at 80% 70%, rgba(124, 58, 237, 0.12) 0%, transparent 50%),
+						radial-gradient(ellipse 1000px 500px at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+						radial-gradient(ellipse 400px 600px at 10% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+						radial-gradient(ellipse 700px 400px at 90% 20%, rgba(139, 92, 246, 0.09) 0%, transparent 50%),
+						linear-gradient(180deg, rgb(30, 34, 42) 0%, rgb(37, 42, 52) 50%, rgb(30, 34, 42) 100%);
+				}
+				50% {
+					background: 
+						radial-gradient(ellipse 800px 600px at 25% 35%, rgba(79, 70, 229, 0.18) 0%, transparent 50%),
+						radial-gradient(ellipse 600px 800px at 75% 65%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+						radial-gradient(ellipse 1000px 500px at 45% 55%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+						radial-gradient(ellipse 400px 600px at 15% 75%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+						radial-gradient(ellipse 700px 400px at 85% 25%, rgba(139, 92, 246, 0.11) 0%, transparent 50%),
+						linear-gradient(180deg, rgb(30, 34, 42) 0%, rgb(37, 42, 52) 50%, rgb(30, 34, 42) 100%);
+				}
+			}
+
 			/* Animation float pour l'icône */
 			@keyframes float {
 				0%, 100% { transform: translateY(0px); }
@@ -168,8 +216,25 @@ import '../styles/global.css';
 				const detailsStep = document.querySelector('.details-step');
 				const submitButton = form.querySelector('button[type="submit"]');
 				const toast = document.getElementById('toast');
+				const mouseGlow = document.getElementById('mouse-glow');
 
 				let emailValidated = false;
+
+				// Effet de lumière qui suit la souris
+				document.addEventListener('mousemove', (e) => {
+					if (mouseGlow) {
+						mouseGlow.style.left = e.clientX + 'px';
+						mouseGlow.style.top = e.clientY + 'px';
+						mouseGlow.style.opacity = '1';
+					}
+				});
+
+				// Masquer l'effet quand la souris quitte la fenêtre
+				document.addEventListener('mouseleave', () => {
+					if (mouseGlow) {
+						mouseGlow.style.opacity = '0';
+					}
+				});
 
 				// Fonction pour afficher le toast
 				function showToast(title, message, icon = '✓', duration = 4000) {
