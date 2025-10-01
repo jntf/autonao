@@ -195,29 +195,53 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
   } catch (error: any) {
-    console.error('💥 [API] ERREUR GLOBALE:', error);
+    console.error('💥 [API] ==================== ERREUR GLOBALE ====================');
     console.error('💥 [API] Error name:', error?.name);
     console.error('💥 [API] Error message:', error?.message);
+    console.error('💥 [API] Error code:', error?.code);
     console.error('💥 [API] Error stack:', error?.stack);
-    console.error('💥 [API] Error details:', JSON.stringify(error, null, 2));
-
+    
     // Gérer spécifiquement les erreurs SendGrid
     const errorCode = error?.code || error?.response?.status || error?.statusCode;
-    const errorMessage = error?.message || error?.response?.body?.errors?.[0]?.message || 'Unknown error';
+    const errorBody = error?.response?.body;
+    const errorMessage = error?.message || errorBody?.errors?.[0]?.message || 'Unknown error';
     
+    console.error('🔴 [API] SendGrid Response Body:', JSON.stringify(errorBody, null, 2));
     console.error('🔴 [API] SendGrid error code:', errorCode);
     console.error('🔴 [API] SendGrid error message:', errorMessage);
+    console.error('🔴 [API] SendGrid errors array:', JSON.stringify(errorBody?.errors, null, 2));
+    console.error('💥 [API] ========================================================');
 
-    if (errorCode === 403) {
-      console.error('Erreur SendGrid 403 - Vérifiez:', {
-        apiKey: 'Clé API valide?',
-        fromEmail: 'Domaine vérifié dans SendGrid?',
-        permissions: 'Permissions Mail Send activées?'
-      });
-
+    // Unauthorized = clé API invalide
+    if (errorCode === 401) {
+      console.error('❌ [API] UNAUTHORIZED - La clé API SendGrid est invalide ou manquante');
+      console.error('❌ [API] Vérifiez la variable SENDGRID_API_KEY dans Vercel');
+      
       return new Response(JSON.stringify({
         success: false,
-        message: 'Configuration email en cours. Veuillez réessayer plus tard.'
+        message: 'Erreur de configuration serveur',
+        errorCode: 401,
+        errorType: 'UNAUTHORIZED',
+        details: 'La clé API SendGrid est invalide ou manquante',
+        fullError: errorBody?.errors || errorMessage
+      }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+
+    if (errorCode === 403) {
+      console.error('❌ [API] FORBIDDEN - Vérifiez les permissions SendGrid');
+      
+      return new Response(JSON.stringify({
+        success: false,
+        message: 'Configuration email en cours',
+        errorCode: 403,
+        errorType: 'FORBIDDEN',
+        details: 'Permissions SendGrid manquantes',
+        fullError: errorBody?.errors || errorMessage
       }), {
         status: 500,
         headers: {
@@ -228,8 +252,10 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       success: false,
-      message: 'Une erreur est survenue. Veuillez réessayer.',
-      debug: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      message: 'Une erreur est survenue',
+      errorCode: errorCode || 'UNKNOWN',
+      errorMessage: errorMessage,
+      fullError: errorBody?.errors || error?.message
     }), {
       status: 500,
       headers: {

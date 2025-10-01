@@ -333,6 +333,8 @@ import '../styles/global.css';
 						});
 
 						const result = await response.json();
+						
+						console.log('📬 [FRONTEND] Réponse API:', result);
 
 						if (result.success) {
 							showToast('Demande envoyée !', result.message, '✓', 5000);
@@ -345,10 +347,17 @@ import '../styles/global.css';
 							}, 500);
 							emailValidated = false;
 						} else {
+							console.error('❌ [FRONTEND] Erreur API:', {
+								message: result.message,
+								errorCode: result.errorCode,
+								errorType: result.errorType,
+								details: result.details,
+								fullError: result.fullError
+							});
 							showToast('Erreur', result.message, '❌');
 						}
 					} catch (error) {
-						console.error('Erreur:', error);
+						console.error('❌ [FRONTEND] Erreur fetch:', error);
 						showToast('Erreur', 'Une erreur est survenue. Veuillez réessayer.', '❌');
 					} finally {
 						// Réactiver le bouton
