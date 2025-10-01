@@ -1,0 +1,299 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Autonao.com - Site en construction</title>
+		<meta name="description" content="Autonao.com - Site en cours de développement. Revenez bientôt pour découvrir notre plateforme." />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	</head>
+	<body class="min-h-screen flex flex-col items-center justify-center p-8 text-center text-white font-['Inter'] bg-gradient-to-br from-[rgb(47,53,67)] via-[rgb(37,42,52)] to-[rgb(30,34,42)]">
+		<!-- Toast notification -->
+		<div id="toast" class="fixed top-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-6 py-4 shadow-2xl opacity-0 translate-x-full transition-all duration-500 ease-out pointer-events-none z-50">
+			<div class="flex items-center gap-3">
+				<div class="toast-icon text-2xl">✓</div>
+				<div class="text-left">
+					<div class="font-medium text-white toast-title">Demande envoyée !</div>
+					<div class="text-sm text-white/70 toast-message">Nous vous contacterons bientôt</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex-1 flex flex-col items-center justify-center w-full max-w-2xl mx-auto">
+			<!-- Logo -->
+			<div class="mb-8">
+				<img src="/logo-autonao.png" alt="Autonao.com" class="h-20 w-auto drop-shadow-lg" />
+			</div>
+
+			<!-- Icon construction avec animation float -->
+			<div class="mb-8 animate-float">
+				<svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M12 2L2 7l10 5 10-5-10-5z" fill="#4F46E5"/>
+					<path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+			</div>
+
+			<!-- Titre -->
+			<h1 class="text-5xl font-bold mb-4 tracking-tight">Site en construction</h1>
+			<p class="text-xl font-light mb-12 opacity-90">Nous travaillons dur pour vous apporter quelque chose d'incroyable</p>
+
+			<!-- Barre de progression -->
+			<div class="w-full mb-16">
+				<div class="w-full h-1.5 bg-white/15 rounded-full overflow-hidden mb-3">
+					<div class="progress-fill h-full bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full"></div>
+				</div>
+				<span class="text-sm font-medium opacity-70">85% terminé</span>
+			</div>
+
+			<!-- Section formulaire -->
+			<div class="w-full mt-8">
+				<h3 class="text-3xl font-bold mb-2 tracking-tight">Rejoignez la liste d'attente</h3>
+				<p class="text-base text-white/60 mb-10">Accès prioritaire pour les professionnels</p>
+
+				<div class="w-full max-w-lg mx-auto">
+					<form class="space-y-5 notify-form">
+						<!-- Étape 1: Email uniquement -->
+						<div class="email-step transition-all duration-300 ease-out">
+							<div class="space-y-2">
+								<label class="block text-xs font-medium text-white/70 uppercase tracking-wide">Email professionnel</label>
+								<input type="email" name="email" required
+									   class="w-full px-0 py-2.5 bg-transparent border-0 border-b border-white/20 text-white text-base
+											font-light transition-all duration-300 ease-out
+											focus:outline-none focus:border-indigo-400 focus:shadow-[0_1px_0_0_rgba(129,140,248,0.5)]
+											placeholder:text-white/30 email-input"
+									   placeholder="votre@email.com" />
+							</div>
+						</div>
+
+						<!-- Étape 2: Informations détaillées (masquées initialement) -->
+						<div class="details-step opacity-0 max-h-0 overflow-hidden transition-all duration-500 ease-out -translate-y-2" style="display: none;">
+							<div class="space-y-5 pt-2">
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+									<div class="space-y-2">
+										<label class="block text-xs font-medium text-white/70 uppercase tracking-wide">Prénom</label>
+										<input type="text" name="firstName" required
+											   class="w-full px-0 py-2.5 bg-transparent border-0 border-b border-white/20 text-white text-base
+													font-light transition-all duration-300 ease-out
+													focus:outline-none focus:border-indigo-400 focus:shadow-[0_1px_0_0_rgba(129,140,248,0.5)]
+													placeholder:text-white/30"
+											   placeholder="Jean" />
+									</div>
+									<div class="space-y-2">
+										<label class="block text-xs font-medium text-white/70 uppercase tracking-wide">Nom</label>
+										<input type="text" name="lastName" required
+											   class="w-full px-0 py-2.5 bg-transparent border-0 border-b border-white/20 text-white text-base
+													font-light transition-all duration-300 ease-out
+													focus:outline-none focus:border-indigo-400 focus:shadow-[0_1px_0_0_rgba(129,140,248,0.5)]
+													placeholder:text-white/30"
+											   placeholder="Dupont" />
+									</div>
+								</div>
+
+								<div class="space-y-2">
+									<label class="block text-xs font-medium text-white/70 uppercase tracking-wide">Entreprise</label>
+									<input type="text" name="company" required
+										   class="w-full px-0 py-2.5 bg-transparent border-0 border-b border-white/20 text-white text-base
+												font-light transition-all duration-300 ease-out
+												focus:outline-none focus:border-indigo-400 focus:shadow-[0_1px_0_0_rgba(129,140,248,0.5)]
+												placeholder:text-white/30"
+										   placeholder="Votre entreprise" />
+								</div>
+
+								<div class="space-y-2">
+									<label class="block text-xs font-medium text-white/70 uppercase tracking-wide">Téléphone</label>
+									<input type="tel" name="phone"
+										   class="w-full px-0 py-2.5 bg-transparent border-0 border-b border-white/20 text-white text-base
+												font-light transition-all duration-300 ease-out
+												focus:outline-none focus:border-indigo-400 focus:shadow-[0_1px_0_0_rgba(129,140,248,0.5)]
+												placeholder:text-white/30"
+										   placeholder="+33 6 12 34 56 78" />
+								</div>
+							</div>
+						</div>
+
+						<button type="submit"
+								class="w-full mt-10 px-8 py-3.5 bg-white/10 backdrop-blur-sm
+									   text-white text-sm font-medium rounded-xl
+									   transition-all duration-300 ease-out
+									   hover:bg-white/15 hover:shadow-lg hover:shadow-white/10
+									   active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed
+									   border border-white/20 flex items-center justify-center gap-2 group">
+							<span class="button-text">Rejoindre la liste d'attente</span>
+							<div class="button-icon text-base transition-transform duration-300 group-hover:translate-x-1">→</div>
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Footer -->
+		<footer class="w-full text-center py-8 text-sm opacity-70">
+			<p>&copy; 2025 Autonao.com. Tous droits réservés.</p>
+		</footer>
+
+		<style>
+			/* Animation float pour l'icône */
+			@keyframes float {
+				0%, 100% { transform: translateY(0px); }
+				50% { transform: translateY(-10px); }
+			}
+
+			.animate-float {
+				animation: float 3s ease-in-out infinite;
+			}
+
+			/* Animation de la barre de progression */
+			@keyframes progressAnimation {
+				from { width: 0%; }
+				to { width: 85%; }
+			}
+
+			.progress-fill {
+				width: 85%;
+				animation: progressAnimation 2s ease-in-out;
+			}
+		</style>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const form = document.querySelector('.notify-form');
+				const emailInput = document.querySelector('.email-input');
+				const detailsStep = document.querySelector('.details-step');
+				const submitButton = form.querySelector('button[type="submit"]');
+				const toast = document.getElementById('toast');
+
+				let emailValidated = false;
+
+				// Fonction pour afficher le toast
+				function showToast(title, message, icon = '✓', duration = 4000) {
+					const toastTitle = toast.querySelector('.toast-title');
+					const toastMessage = toast.querySelector('.toast-message');
+					const toastIcon = toast.querySelector('.toast-icon');
+					
+					toastTitle.textContent = title;
+					toastMessage.textContent = message;
+					toastIcon.textContent = icon;
+					
+					// Afficher le toast
+					toast.classList.remove('opacity-0', 'translate-x-full', 'pointer-events-none');
+					toast.classList.add('opacity-100', 'translate-x-0', 'pointer-events-auto');
+					
+					// Masquer après la durée
+					setTimeout(() => {
+						toast.classList.remove('opacity-100', 'translate-x-0', 'pointer-events-auto');
+						toast.classList.add('opacity-0', 'translate-x-full', 'pointer-events-none');
+					}, duration);
+				}
+
+				// Écouter les changements sur l'email
+				emailInput.addEventListener('input', function() {
+					const email = this.value.trim();
+
+					if (email.includes('@') && email.includes('.') && email.length > 5) {
+						if (!emailValidated) {
+							// Révéler les champs supplémentaires avec animation
+							detailsStep.style.display = 'block';
+							setTimeout(() => {
+								detailsStep.classList.remove('opacity-0', 'max-h-0', '-translate-y-2');
+								detailsStep.classList.add('opacity-100', 'max-h-96', 'translate-y-0');
+							}, 50);
+							emailValidated = true;
+						}
+					} else {
+						if (emailValidated) {
+							// Cacher les champs supplémentaires
+							detailsStep.classList.remove('opacity-100', 'max-h-96', 'translate-y-0');
+							detailsStep.classList.add('opacity-0', 'max-h-0', '-translate-y-2');
+							setTimeout(() => {
+								detailsStep.style.display = 'none';
+							}, 500);
+							emailValidated = false;
+						}
+					}
+				});
+
+				// Gérer la soumission du formulaire
+				form.addEventListener('submit', async function(e) {
+					e.preventDefault();
+
+					const formData = new FormData(this);
+					const email = formData.get('email').trim();
+					const firstName = formData.get('firstName') ? formData.get('firstName').trim() : '';
+					const lastName = formData.get('lastName') ? formData.get('lastName').trim() : '';
+					const company = formData.get('company') ? formData.get('company').trim() : '';
+					const phone = formData.get('phone') ? formData.get('phone').trim() : '';
+
+					// Validation
+					if (!email || !email.includes('@')) {
+						showToast('Email invalide', 'Veuillez saisir une adresse email valide', '⚠️');
+						return;
+					}
+
+					if (!emailValidated) {
+						showToast('Email incomplet', 'Veuillez compléter votre email pour continuer', '⚠️');
+						return;
+					}
+
+					if (!firstName || !lastName) {
+						showToast('Informations manquantes', 'Veuillez saisir votre prénom et nom', '⚠️');
+						return;
+					}
+
+					if (!company) {
+						showToast('Entreprise requise', 'Veuillez saisir le nom de votre entreprise', '⚠️');
+						return;
+					}
+
+					// Désactiver le bouton pendant l'envoi
+					submitButton.disabled = true;
+					const buttonText = submitButton.querySelector('.button-text');
+					const buttonIcon = submitButton.querySelector('.button-icon');
+
+					buttonText.textContent = 'Inscription...';
+					buttonIcon.textContent = '⟳';
+
+					try {
+						const response = await fetch('/api/subscribe', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify({ firstName, lastName, company, email, phone })
+						});
+
+						const result = await response.json();
+
+						if (result.success) {
+							showToast('Demande envoyée !', result.message, '✓', 5000);
+							this.reset();
+							// Réinitialiser l'état du formulaire
+							detailsStep.classList.remove('opacity-100', 'max-h-96', 'translate-y-0');
+							detailsStep.classList.add('opacity-0', 'max-h-0', '-translate-y-2');
+							setTimeout(() => {
+								detailsStep.style.display = 'none';
+							}, 500);
+							emailValidated = false;
+						} else {
+							showToast('Erreur', result.message, '❌');
+						}
+					} catch (error) {
+						console.error('Erreur:', error);
+						showToast('Erreur', 'Une erreur est survenue. Veuillez réessayer.', '❌');
+					} finally {
+						// Réactiver le bouton
+						submitButton.disabled = false;
+						buttonText.textContent = 'Rejoindre la liste d\'attente';
+						buttonIcon.textContent = '→';
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
