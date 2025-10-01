@@ -158,11 +158,18 @@ export const POST: APIRoute = async ({ request }) => {
       }
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur lors de l\'inscription:', error);
+    console.error('Error details:', JSON.stringify(error, null, 2));
 
     // Gérer spécifiquement les erreurs SendGrid
-    if (error.code === 403) {
+    const errorCode = error?.code || error?.response?.status || error?.statusCode;
+    const errorMessage = error?.message || error?.response?.body?.errors?.[0]?.message || 'Unknown error';
+    
+    console.error('SendGrid error code:', errorCode);
+    console.error('SendGrid error message:', errorMessage);
+
+    if (errorCode === 403) {
       console.error('Erreur SendGrid 403 - Vérifiez:', {
         apiKey: 'Clé API valide?',
         fromEmail: 'Domaine vérifié dans SendGrid?',
@@ -182,7 +189,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(JSON.stringify({
       success: false,
-      message: 'Une erreur est survenue. Veuillez réessayer.'
+      message: 'Une erreur est survenue. Veuillez réessayer.',
+      debug: process.env.NODE_ENV === 'development' ? errorMessage : undefined
     }), {
       status: 500,
       headers: {
