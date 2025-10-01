@@ -1,16 +1,25 @@
 import type { APIRoute } from 'astro';
 import sgMail from '@sendgrid/mail';
 
-const SENDGRID_API_KEY = import.meta.env.SENDGRID_API_KEY;
-if (!SENDGRID_API_KEY) {
-  throw new Error('SENDGRID_API_KEY is not defined in environment variables');
-}
-sgMail.setApiKey(SENDGRID_API_KEY);
-
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // Récupérer la clé API depuis les variables d'environnement (Vercel runtime)
+    const SENDGRID_API_KEY = import.meta.env.SENDGRID_API_KEY || process.env.SENDGRID_API_KEY;
+    
+    if (!SENDGRID_API_KEY) {
+      console.error('SENDGRID_API_KEY is not defined');
+      return new Response(JSON.stringify({
+        success: false,
+        message: 'Configuration serveur manquante'
+      }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
+    sgMail.setApiKey(SENDGRID_API_KEY);
     // Vérifier le content-type
     const contentType = request.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
